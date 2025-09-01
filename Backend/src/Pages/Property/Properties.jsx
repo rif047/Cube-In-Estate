@@ -143,7 +143,7 @@ export default function Properties() {
 
 
     const columns = [
-        { accessorFn: row => `${row.client.name} (${row.client.phone})`, header: 'Client', enableClickToCopy: true, size: 80 },
+        { accessorFn: row => `${row.client.name} (${row.client.clientType})`, header: 'Client', enableClickToCopy: true, size: 80 },
         { accessorKey: 'name', header: 'Name', size: 80 },
         { accessorKey: 'code', header: 'Code', size: 80 },
         { accessorKey: 'location', header: 'Location', size: 80 },

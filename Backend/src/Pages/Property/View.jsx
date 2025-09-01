@@ -24,7 +24,7 @@ export default function View({ open, onClose, viewData }) {
     const [imgCurrentIndex, setImgCurrentIndex] = useState(0);
 
     const fieldsToView = [
-        { label: 'Client Name', value: `${viewData?.client?.name} (0${viewData?.client?.phone})` },
+        { label: 'Client Name', value: `${viewData?.client?.name}  (${viewData?.client?.clientType})  (0${viewData?.client?.phone})` },
         { label: 'Code', value: viewData?.code },
         { label: 'Location', value: viewData?.location },
         { label: 'Size in Decimal', value: `${viewData?.decimal} Decimal` },

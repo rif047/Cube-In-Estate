@@ -17,15 +17,21 @@ const PORT = process.env.PORT || 9000;
 // Rate limiting
 app.use(rateLimit({ windowMs: 60000, max: 200 }));
 
+
+
 // Request timeout
 app.use((req, res, next) => {
     req.setTimeout(600000);
     next();
 });
 
+
+
 // Static files
 app.use(express.static('Assets'));
 app.use('/api/Images', express.static(path.join(__dirname, 'Assets/Images')));
+
+
 
 // Security & CORS
 app.use(helmet({
@@ -38,6 +44,8 @@ app.use(helmet({
     },
 }));
 
+
+
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -47,10 +55,16 @@ app.use(cors({
     exposedHeaders: ['Authorization']
 }));
 
+
+
+
 // Middleware
 app.use(morgan('dev'));
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
+
+
+
 
 // Routes
 app.get('/favicon.ico', (_, res) => res.sendStatus(204));
@@ -58,8 +72,12 @@ app.get('/', (_, res) => res.send('✅ Server Running Successfully...'));
 app.use('/login', Login);
 app.use('/api', Check_Login, routes);
 
+
 // 404 handler
 app.use((req, res) => res.status(404).json({ error: 'Not Found' }));
+
+
+
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -74,10 +92,16 @@ app.use((err, req, res, next) => {
     });
 });
 
+
+
+
 // Start server
 const server = app.listen(PORT, () => {
     console.log(`🚀 Server is running at http://localhost:${PORT}`);
 });
+
+
+
 
 // Handle connection errors
 server.on('connection', (socket) => {
@@ -86,11 +110,16 @@ server.on('connection', (socket) => {
     });
 });
 
+
+
+
 // Graceful shutdown
 process.on('SIGINT', () => {
     console.log('\n🛑 Server shutting down...');
     process.exit(0);
 });
+
+
 
 process.on('unhandledRejection', (reason) => {
     console.error('❌ Unhandled Rejection:', reason);
