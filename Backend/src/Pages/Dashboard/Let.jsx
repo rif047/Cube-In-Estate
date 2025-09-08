@@ -43,7 +43,7 @@ export default function Let() {
                 ) : pending.length === 0 ? (
                     <p>No properties found</p>
                 ) : (
-                    <div className="space-y-2">
+                    <div className="space-y-3 pb-2">
                         {pending.map(item => (
                             <div key={item._id} className="relative bg-white p-1 rounded-lg shadow overflow-hidden">
                                 <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-gray-200 to-transparent z-10"></div>

@@ -7,11 +7,11 @@ import View from './View';
 import CachedIcon from '@mui/icons-material/Cached';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Solds() {
-    document.title = 'Sold';
+export default function Agent_Properties() {
+    document.title = 'Agent Properties';
 
     const EndPoint = 'properties';
-    const userType = localStorage.getItem("userType"); // 👈 role check
+    const userType = localStorage.getItem("userType");
 
     const [loading, setLoading] = useState(false);
     const [allData, setAllData] = useState([]);
@@ -34,7 +34,7 @@ export default function Solds() {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/${EndPoint}`);
             const allProperties = res.data.reverse();
             setAllData(allProperties);
-            const soldProperties = allProperties.filter(property => property.status === "Sell");
+            const soldProperties = allProperties.filter(property => property.client?.clientType === "Agent");
             setFilteredData(soldProperties);
         } catch {
             toast.error('Failed to fetch data.');
@@ -45,8 +45,9 @@ export default function Solds() {
 
     useEffect(() => { fetchData(); }, []);
 
+
     const baseColumns = [
-        { accessorKey: 'name', header: 'Name', size: 80 },
+        { accessorKey: 'name', header: 'Property Name', size: 80 },
         { accessorKey: 'code', header: 'Code', size: 80 },
         { accessorFn: row => `${row.decimal} dec`, header: 'Size', size: 80 },
         { accessorFn: row => `${row.sell_price} tk`, header: 'Sold Price', size: 80 },
@@ -70,14 +71,14 @@ export default function Solds() {
     ];
 
     const extraColumns = [
-        { accessorFn: row => `${row.client?.name} (${row.client?.clientType})`, header: 'Client', size: 80 },
-        { accessorFn: row => `${row.customer?.name} (${row.customer?.phone})`, header: 'Customer', size: 80 },
+        { accessorFn: row => `${row.client?.name} (${row.client?.phone})`, header: 'Agent', size: 80 },
+        { accessorFn: row => row.customer ? `${row.customer.name} (${row.customer.phone})` : 'Pending...', header: 'Customer', size: 80 },
         { accessorKey: 'location', header: 'Location', size: 80 },
     ];
 
     const columns = userType === "Author" ? baseColumns : [...extraColumns, ...baseColumns];
 
-    // ✅ Limit text length (except image)
+
     columns.forEach(col => {
         if (!['images'].includes(col.accessorKey)) {
             col.Cell = ({ cell }) => {
@@ -93,7 +94,7 @@ export default function Solds() {
 
             <section className="flex justify-between px-5 py-2 mb-3 bg-[#4c5165]">
                 <div className='flex items-center'>
-                    <h1 className="font-bold text-sm md:text-lg text-white mr-2">Sold Properties</h1>
+                    <h1 className="font-bold text-sm md:text-lg text-white mr-2">Agent Properties</h1>
                     {loading ? (
                         <div className="flex justify-center items-center text-white">
                             <svg className="animate-spin h-6 w-6 text-white" viewBox="0 0 24 24" fill="none">

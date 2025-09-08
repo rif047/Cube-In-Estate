@@ -145,9 +145,7 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
     };
 
     const formFields = [
-        { label: 'Describe Property', name: 'comments', type: 'text' },
         { label: 'Property Name*', name: 'name', type: 'text' },
-        { label: 'Code*', name: 'code', type: 'text' },
         { label: 'Location*', name: 'location', type: 'text' },
         { label: 'Size in Decimal*', name: 'decimal', type: 'number' },
         { label: 'Size in SQFT', name: 'sqft', type: 'number' },
@@ -155,7 +153,8 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
         { label: 'Expected Sell Price*', name: 'sell_price', type: 'number' },
         { label: 'Images Link', name: 'drive', type: 'text' },
         { label: 'Google Map Link', name: 'map', type: 'text' },
-        { label: 'Source', name: 'source', type: 'text' }
+        { label: 'Source', name: 'source', type: 'text' },
+        { label: 'Describe Property', name: 'comments', type: 'text' },
     ];
 
     return (
@@ -236,6 +235,21 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
                         />
                     )}
                 />
+
+                <TextField
+                    label="Code*"
+                    name="code"
+                    type="text"
+                    fullWidth
+                    margin="normal"
+                    size="small"
+                    value={formData.code || ''}
+                    onChange={handleChange}
+                    error={!!errors.code}
+                    helperText={errors.code}
+                    disabled={!!data?._id}
+                />
+
 
                 {formFields.map(({ label, name, type }) => (
                     <TextField

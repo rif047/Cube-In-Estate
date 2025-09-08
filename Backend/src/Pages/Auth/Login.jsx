@@ -22,8 +22,9 @@ export default function Login() {
                 }
             );
 
-            const token = response.data.token;
+            const { token, user } = response.data;
             localStorage.setItem('token', token);
+            localStorage.setItem('userType', user.userType);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
             setUsername('')
@@ -46,8 +47,8 @@ export default function Login() {
                     <div className="max-w-md mx-auto">
                         <img src="/Assets/Video/login.gif" alt="" className='w-[300px] mb-8 mx-auto' />
                         <div>
-                            <h1 className="text-2xl mb-2 font-semibold">Welcome Back!</h1>
-                            <h5 className="text-sm mb-6">Please Enter Login Details Below</h5>
+                            <h1 className="text-2xl mb-2 font-semibold">Welcome! Cube In Estate</h1>
+                            <h5 className="text-sm mb-6">Please Enter Login Details Below:</h5>
                         </div>
                         <div className="divide-y divide-gray-200">
                             <form onSubmit={handleLogin} className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
@@ -55,7 +56,7 @@ export default function Login() {
                                     <input
                                         name="username"
                                         type="text"
-                                        className="mt-1 mb-2 peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                                        className="mt-2 mb-2 peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                                         placeholder="Username"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)} />
@@ -69,7 +70,7 @@ export default function Login() {
                                     <input
                                         name="password"
                                         type="password"
-                                        className="mt-1 peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                                        className="mt-2 peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                                         placeholder="Password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)} />

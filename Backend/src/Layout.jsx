@@ -19,7 +19,7 @@ function Layout({ children }) {
                 </header>
 
                 <section className="bg-[#F6F7FB] h-[calc(100vh-92px)] overflow-auto">
-                    <div className="container mx-auto my-5 shadow-md bg-white">
+                    <div className="container mx-auto my-5 shadow-lg bg-white">
                         <main> {children} </main>
                     </div>
                 </section>

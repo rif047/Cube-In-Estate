@@ -4,26 +4,39 @@ import Datatable from '../../Components/Datatable/Datatable';
 import Add_Edit from './Add_Edit';
 import View from './View';
 import axios from 'axios';
-import CachedIcon from '@mui/icons-material/Cached';
-import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import { toast, ToastContainer } from 'react-toastify';
-import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, Button, Autocomplete, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
+import CachedIcon from '@mui/icons-material/Cached';
+import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, Button, Autocomplete } from '@mui/material';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 const columnPermissions = {
-    Admin: ["client", "name", "code", "location", "decimal", "agree_price", "sell_price", "images", "property_for"],
-    Author: ["name", "code", "decimal", "sell_price", "images"]
+    Admin: [
+        "client",
+        "name",
+        "code",
+        "location",
+        "decimal",
+        "agree_price",
+        "sell_price",
+        "images",
+        "property_for"
+    ],
+    Author: [
+        "name",
+        "code",
+        "decimal",
+        "sell_price",
+        "images"
+    ]
 };
 
 export default function Properties() {
     document.title = 'Property';
 
-
-
     const EndPoint = 'properties';
     const userType = localStorage.getItem("userType") || "Author";
-
-
 
     const [modalOpen, setModalOpen] = useState(false);
     const [viewModalOpen, setViewModalOpen] = useState(false);
@@ -44,11 +57,15 @@ export default function Properties() {
 
 
 
-    const userPermissions = userType === "Admin" ? { canEdit: !disableEditDelete, canView: true, canDelete: !disableEditDelete } : { canEdit: false, canView: false, canDelete: false };
+    const userPermissions = userType === "Admin"
+        ? { canEdit: !disableEditDelete, canView: true, canDelete: !disableEditDelete }
+        : { canEdit: false, canView: false, canDelete: false };
 
 
-    const capitalizeWords = str => str.split(' ').map(word => word[0].toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-
+    const capitalizeWords = str =>
+        str.split(' ')
+            .map(word => word[0].toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
 
     const fetchData = async () => {
         setLoading(true);
@@ -66,7 +83,6 @@ export default function Properties() {
         }
     };
 
-
     const handleDelete = async row => {
         if (!window.confirm(`Delete ${row.name.toUpperCase()}?`)) return;
         try {
@@ -77,7 +93,6 @@ export default function Properties() {
             toast.error('Failed to delete.');
         }
     };
-
 
     const handleAdd = () => { setEditData(null); setModalOpen(true); };
     const handleEdit = row => { setEditData(row); setModalOpen(true); };
@@ -121,8 +136,6 @@ export default function Properties() {
         }
     };
 
-
-
     useEffect(() => { fetchData(); }, []);
 
 
@@ -143,6 +156,7 @@ export default function Properties() {
             setShowAll(false);
             setDisableEditDelete(true);
         } else {
+            // default Pending
             setFilteredData(allData.filter(p => p.status === "Pending"));
             setShowAll(false);
             setDisableEditDelete(false);
@@ -150,7 +164,12 @@ export default function Properties() {
     };
 
     let columns = [
-        { key: "client", accessorFn: row => `${row.client?.name} (${row.client?.clientType})`, header: 'Client', size: 80 },
+        {
+            key: "client",
+            accessorFn: row => `${row.client?.name} (${row.client?.clientType})`,
+            header: 'Client',
+            size: 80
+        },
         { key: "name", accessorKey: 'name', header: 'Property Name', size: 80 },
         { key: "code", accessorKey: 'code', header: 'Code', size: 80 },
         { key: "location", accessorKey: 'location', header: 'Location', size: 80 },
@@ -225,14 +244,12 @@ export default function Properties() {
                     ) : (
                         <>
                             <button className="text-gray-200" onClick={fetchData}><CachedIcon /></button>
-
                             <FormControl size="small" sx={{ ml: 4, minWidth: 150 }}>
-                                <InputLabel className='!text-gray-300'>Filter Property</InputLabel>
+                                <InputLabel>Filter Property</InputLabel>
                                 <Select
                                     value={filterType}
                                     label="Filter Property"
                                     onChange={(e) => handleFilterChange(e.target.value)}
-                                    className='!text-gray-300'
                                 >
                                     <MenuItem value="Pending">Pending</MenuItem>
                                     <MenuItem value="Show All">Show All</MenuItem>

@@ -82,6 +82,7 @@ export default function Users() {
         { accessorKey: 'phone', header: 'Phone' },
         { accessorKey: 'email', header: 'Email' },
         { accessorKey: 'username', header: 'UserName' },
+        { accessorKey: 'userType', header: 'User Type' },
     ];
 
     columns.forEach(column => {

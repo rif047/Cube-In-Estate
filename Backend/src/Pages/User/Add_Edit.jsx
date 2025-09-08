@@ -37,7 +37,7 @@ export default function AddEditUser({ open, onClose, data, refreshData }) {
 
     const validate = () => {
         const newErrors = {};
-        const { name, phone, username, email, password, answer } = formData;
+        const { name, phone, username, email, password, userType, answer } = formData;
 
         if (!name) newErrors.name = 'Name is required.';
         if (!phone) newErrors.phone = 'Phone is required.';
@@ -45,6 +45,7 @@ export default function AddEditUser({ open, onClose, data, refreshData }) {
         if (!email) newErrors.email = 'Email is required.';
         if (!data && !password) newErrors.password = 'Password is required.';
         if (!answer) newErrors.answer = 'Secret Word is required.';
+        if (!userType) newErrors.userType = 'User Type is required.';
 
         if (!/^\d+$/.test(phone || '')) newErrors.phone = 'Phone number must contain numbers.';
         if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { newErrors.email = 'Already exist || Invalid email address' }
@@ -102,6 +103,23 @@ export default function AddEditUser({ open, onClose, data, refreshData }) {
                         <CloseIcon />
                     </IconButton>
                 </Box>
+
+                <TextField
+                    select
+                    label="User Type*"
+                    name="userType"
+                    fullWidth
+                    margin="normal"
+                    size="small"
+                    style={{ marginBottom: '15px' }}
+                    value={formData.userType || ''}
+                    onChange={handleChange}
+                    error={!!errors.userType}
+                    helperText={errors.userType}
+                >
+                    <MenuItem value="Admin">Admin</MenuItem>
+                    <MenuItem value="Author">Author</MenuItem>
+                </TextField>
 
                 {[
                     { name: 'name', label: 'Name*' },

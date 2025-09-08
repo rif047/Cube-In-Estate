@@ -5,6 +5,7 @@ import Login from './Pages/Auth/Login';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import Customers from './Pages/Customer/Customers';
 import Clients from './Pages/Client/Clients';
+import Agent_Properties from './Pages/Agent_Property/Agent_Properties';
 import Properties from './Pages/Property/Properties';
 import Offering from './Pages/Under Offer/Under_Offers';
 import Lets from './Pages/Let/Lets';
@@ -15,10 +16,12 @@ import Users from './Pages/User/Users';
 
 export default function MainRoutes() {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [userType, setUserType] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
+        const role = localStorage.getItem("userType");
 
         if (token) {
             try {
@@ -26,11 +29,14 @@ export default function MainRoutes() {
                 if (exp * 1000 > Date.now()) {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                     setLoggedIn(true);
+                    setUserType(role);
                 } else {
                     localStorage.removeItem("token");
+                    localStorage.removeItem("userType");
                 }
             } catch (error) {
                 localStorage.removeItem("token");
+                localStorage.removeItem("userType");
             }
         }
 
@@ -39,6 +45,7 @@ export default function MainRoutes() {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("userType");
         setLoggedIn(false);
         delete axios.defaults.headers.common['Authorization'];
     };
@@ -55,15 +62,23 @@ export default function MainRoutes() {
         <Routes>
             <Route path="/login" element={loggedIn ? <Navigate to="/" replace /> : <Login setLoggedIn={setLoggedIn} />} />
             <Route path="/" element={loggedIn ? <Dashboard handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+            <Route path="/agent_properties" element={loggedIn ? <Agent_Properties handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
             <Route path="/properties" element={loggedIn ? <Properties handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
             <Route path="/offering" element={loggedIn ? <Offering handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
             <Route path="/lets" element={loggedIn ? <Lets handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
             <Route path="/solds" element={loggedIn ? <Solds handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
-            <Route path="/customers" element={loggedIn ? <Customers handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
-            <Route path="/clients" element={loggedIn ? <Clients handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
-            <Route path="/expenses" element={loggedIn ? <Expenses handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
-            <Route path="/expenses/categories" element={loggedIn ? <Expense_Categories handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
-            <Route path="/users" element={loggedIn ? <Users handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+
+
+            {userType !== "Author" && (
+                <>
+                    <Route path="/customers" element={loggedIn ? <Customers handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+                    <Route path="/clients" element={loggedIn ? <Clients handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+                    <Route path="/expenses" element={loggedIn ? <Expenses handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+                    <Route path="/expenses/categories" element={loggedIn ? <Expense_Categories handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+                    <Route path="/users" element={loggedIn ? <Users handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+                </>
+            )}
+
             <Route path="*" element={<Navigate to={loggedIn ? "/" : "/login"} replace />} />
         </Routes>
     );

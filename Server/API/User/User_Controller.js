@@ -38,7 +38,7 @@ let Create = async (req, res) => {
         let newData = new User({
             name,
             phone,
-            userType: 'Admin',
+            userType,
             username: username.toLowerCase(),
             email: email.toLowerCase(),
             password: hashPassword,
@@ -91,7 +91,7 @@ let Update = async (req, res) => {
 
         updateData.name = name;
         updateData.phone = phone;
-        updateData.userType = 'Admin';
+        updateData.userType = userType;
         updateData.username = username.toLowerCase();
         updateData.email = email.toLowerCase();
         updateData.answer = answer.toLowerCase();

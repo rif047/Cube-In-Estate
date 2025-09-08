@@ -22,6 +22,7 @@ Route.post("/", async (req, res) => {
                 user: {
                     id: user._id,
                     username: user.username,
+                    userType: user.userType,
                 },
                 message: "Login successful!"
             });

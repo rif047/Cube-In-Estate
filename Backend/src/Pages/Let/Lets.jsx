@@ -7,12 +7,11 @@ import View from './View';
 import CachedIcon from '@mui/icons-material/Cached';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 export default function Lets() {
     document.title = 'Let';
 
     const EndPoint = 'properties';
-
+    const userType = localStorage.getItem("userType"); // 👈 role check
 
     const [loading, setLoading] = useState(false);
     const [allData, setAllData] = useState([]);
@@ -20,19 +19,14 @@ export default function Lets() {
     const [viewData, setViewData] = useState(null);
     const [viewModalOpen, setViewModalOpen] = useState(false);
 
-
-    const userPermissions = {
-        canEdit: false,
-        canView: true,
-        canDelete: false
-    };
+    const userPermissions = userType === "Admin"
+        ? { canEdit: false, canView: true, canDelete: false }
+        : { canEdit: false, canView: false, canDelete: false };
 
     const handleView = row => {
         setViewData(row);
         setViewModalOpen(true);
     };
-
-
 
     const fetchData = async () => {
         setLoading(true);
@@ -40,8 +34,8 @@ export default function Lets() {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/${EndPoint}`);
             const allProperties = res.data.reverse();
             setAllData(allProperties);
-            const offeringProperties = allProperties.filter(property => property.status === "Let");
-            setFilteredData(offeringProperties);
+            const letProperties = allProperties.filter(property => property.status === "Let");
+            setFilteredData(letProperties);
         } catch {
             toast.error('Failed to fetch data.');
         } finally {
@@ -49,18 +43,12 @@ export default function Lets() {
         }
     };
 
-
-
     useEffect(() => { fetchData(); }, []);
 
-
-
-    const columns = [
-        { accessorFn: row => `${row.client?.name} (${row.client?.phone})`, header: 'Client', enableClickToCopy: true, size: 80 },
-        { accessorFn: row => `${row.customer?.name} (${row.customer?.phone})`, header: 'Customer', enableClickToCopy: true, size: 80 },
+    // ✅ Column define based on userType
+    const baseColumns = [
         { accessorKey: 'name', header: 'Name', size: 80 },
         { accessorKey: 'code', header: 'Code', size: 80 },
-        { accessorKey: 'location', header: 'Location', size: 80 },
         { accessorFn: row => `${row.decimal} dec`, header: 'Size', size: 80 },
         { accessorFn: row => `${row.sell_price} tk`, header: 'Let Price', size: 80 },
         {
@@ -82,20 +70,23 @@ export default function Lets() {
         },
     ];
 
+    const extraColumns = [
+        { accessorFn: row => `${row.client?.name} (${row.client?.clientType})`, header: 'Client', size: 80 },
+        { accessorFn: row => `${row.customer?.name} (${row.customer?.phone})`, header: 'Customer', size: 80 },
+        { accessorKey: 'location', header: 'Location', size: 80 },
+    ];
 
+    const columns = userType === "Author" ? baseColumns : [...extraColumns, ...baseColumns];
+
+    // ✅ Limit text length (except image)
     columns.forEach(col => {
-        if (!['images', 'property_for'].includes(col.accessorKey)) {
+        if (!['images'].includes(col.accessorKey)) {
             col.Cell = ({ cell }) => {
                 const val = String(cell.getValue() || '');
                 return <span title={val}>{val.slice(0, 30)}{val.length > 30 && '...'}</span>;
             };
         }
     });
-
-
-
-
-
 
     return (
         <Layout>
@@ -106,19 +97,18 @@ export default function Lets() {
                     <h1 className="font-bold text-sm md:text-lg text-white mr-2">Let Properties</h1>
                     {loading ? (
                         <div className="flex justify-center items-center text-white">
-                            <svg className="animate-spin h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg className="animate-spin h-6 w-6 text-white" viewBox="0 0 24 24" fill="none">
                                 <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="3" strokeDasharray="10" strokeDashoffset="75" />
                             </svg>
                         </div>
-                    ) : <button className="text-gray-200" onClick={fetchData}><CachedIcon /></button>
-                    }
+                    ) : <button className="text-gray-200" onClick={fetchData}><CachedIcon /></button>}
                 </div>
             </section>
 
             <section>
                 {loading ? (
                     <div className="flex justify-center py-4">
-                        <svg className="animate-spin p-5 h-32 w-32 text-gray-700" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="animate-spin p-5 h-32 w-32 text-gray-700" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="3" strokeDasharray="50" strokeDashoffset="80" />
                         </svg>
                     </div>
@@ -132,7 +122,6 @@ export default function Lets() {
                 )}
             </section>
 
-            {/* {modalOpen && <Add_Edit open={modalOpen} onClose={() => setModalOpen(false)} data={editData} refreshData={fetchData} />} */}
             {viewModalOpen && <View open={viewModalOpen} onClose={() => setViewModalOpen(false)} viewData={viewData} />}
         </Layout>
     );
