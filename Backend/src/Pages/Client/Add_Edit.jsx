@@ -194,6 +194,8 @@ export default function AddEditClient({ open, onClose, data, refreshData }) {
                     <MenuItem value="Property Developer">Property Developer</MenuItem>
                     <MenuItem value="Investor">Investor</MenuItem>
                     <MenuItem value="Company">Company</MenuItem>
+                    <MenuItem value="Poroperty Managment">Poroperty Managment</MenuItem>
+                    <MenuItem value="Guaranteed Rent">Guaranteed Rent</MenuItem>
                     <MenuItem value="Other">Other</MenuItem>
                 </TextField>
 
