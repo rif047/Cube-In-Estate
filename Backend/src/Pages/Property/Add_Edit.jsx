@@ -68,7 +68,7 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
         if (!property_type) newErrors.property_type = 'Property Type is required.';
         if (!property_for) newErrors.property_for = 'Property For is required.';
         if (!decimal) newErrors.decimal = 'Property Size is required.';
-        if (!client) newErrors.client = 'Client is required.';
+        if (!client) newErrors.client = 'Landlord is required.';
 
         if (agree_price && isNaN(parseFloat(agree_price))) { newErrors.agree_price = 'Must be a number.'; }
         if (decimal && isNaN(parseFloat(decimal))) { newErrors.decimal = 'Must be a number.'; }
@@ -203,7 +203,7 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label="Select Client*"
+                            label="Select Landlord*"
                             error={!!errors.client}
                             helperText={errors.client}
                         />

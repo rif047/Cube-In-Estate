@@ -27,7 +27,7 @@ export default function View({ open, onClose, viewData }) {
         { label: 'Expense Date', value: viewData?.date },
         { label: 'Category', value: viewData?.category?.name },
         { label: 'Name', value: viewData?.name },
-        { label: 'Amount', value: `${viewData?.amount} tk` },
+        { label: 'Amount', value: `${viewData?.amount} £` },
         { label: 'Description', value: viewData?.description },
     ];
 

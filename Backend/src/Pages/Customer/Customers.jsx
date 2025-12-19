@@ -78,7 +78,7 @@ export default function Customers() {
 
 
     const columns = [
-        { accessorKey: 'name', header: 'Customer Name' },
+        { accessorKey: 'name', header: 'Tenant Name' },
         { accessorKey: 'phone', header: 'Phone' },
         { accessorKey: 'email', header: 'Email' },
         { accessorKey: 'address', header: 'Address' },
@@ -105,7 +105,7 @@ export default function Customers() {
 
             <section className="flex justify-between px-5 py-2 mb-3 bg-[#4c5165]">
                 <div className='flex justify-center items-center'>
-                    <h1 className="font-bold text-sm md:text-lg text-white mr-2">Customer List</h1>
+                    <h1 className="font-bold text-sm md:text-lg text-white mr-2">Tenant List</h1>
 
                     {loading ? (
                         <div className="flex justify-center items-center text-white">

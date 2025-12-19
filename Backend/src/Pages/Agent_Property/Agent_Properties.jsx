@@ -50,7 +50,7 @@ export default function Agent_Properties() {
         { accessorKey: 'name', header: 'Property Name', size: 80 },
         { accessorKey: 'code', header: 'Code', size: 80 },
         { accessorFn: row => `${row.decimal} dec`, header: 'Size', size: 80 },
-        { accessorFn: row => `${row.sell_price} tk`, header: 'Sold Price', size: 80 },
+        { accessorFn: row => `${row.sell_price} £`, header: 'Sold Price', size: 80 },
         {
             accessorKey: 'images',
             header: 'Image',
@@ -72,7 +72,7 @@ export default function Agent_Properties() {
 
     const extraColumns = [
         { accessorFn: row => `${row.client?.name} (${row.client?.phone})`, header: 'Agent', size: 80 },
-        { accessorFn: row => row.customer ? `${row.customer.name} (${row.customer.phone})` : 'Pending...', header: 'Customer', size: 80 },
+        { accessorFn: row => row.customer ? `${row.customer.name} (${row.customer.phone})` : 'Pending...', header: 'Tenant', size: 80 },
         { accessorKey: 'location', header: 'Location', size: 80 },
     ];
 

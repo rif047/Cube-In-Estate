@@ -50,7 +50,7 @@ export default function Lets() {
         { accessorKey: 'name', header: 'Name', size: 80 },
         { accessorKey: 'code', header: 'Code', size: 80 },
         { accessorFn: row => `${row.decimal} dec`, header: 'Size', size: 80 },
-        { accessorFn: row => `${row.sell_price} tk`, header: 'Let Price', size: 80 },
+        { accessorFn: row => `${row.sell_price} £`, header: 'Let Price', size: 80 },
         {
             accessorKey: 'images',
             header: 'Image',
@@ -71,8 +71,8 @@ export default function Lets() {
     ];
 
     const extraColumns = [
-        { accessorFn: row => `${row.client?.name} (${row.client?.clientType})`, header: 'Client', size: 80 },
-        { accessorFn: row => `${row.customer?.name} (${row.customer?.phone})`, header: 'Customer', size: 80 },
+        { accessorFn: row => `${row.client?.name} (${row.client?.clientType})`, header: 'Landlord', size: 80 },
+        { accessorFn: row => `${row.customer?.name} (${row.customer?.phone})`, header: 'Tenant', size: 80 },
         { accessorKey: 'location', header: 'Location', size: 80 },
     ];
 

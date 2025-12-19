@@ -24,15 +24,15 @@ export default function View({ open, onClose, viewData }) {
     const [imgCurrentIndex, setImgCurrentIndex] = useState(0);
 
     const fieldsToView = [
-        { label: 'Client Name', value: `${viewData?.client?.name}  (${viewData?.client?.clientType})  (0${viewData?.client?.phone})` },
+        { label: 'Landlord Name', value: `${viewData?.client?.name}  (${viewData?.client?.clientType})  (0${viewData?.client?.phone})` },
         { label: 'Code', value: viewData?.code },
         { label: 'Location', value: viewData?.location },
         { label: 'Size in Decimal', value: `${viewData?.decimal} Decimal` },
         { label: 'Size in SQFT', value: `${viewData?.sqft} SQFT` },
         { label: 'Property For', value: viewData?.property_for },
         { label: 'Property Type', value: viewData?.property_type },
-        { label: 'Agreed Price', value: `${viewData?.agree_price} tk` },
-        { label: 'Sell Price', value: `${viewData?.sell_price} tk` },
+        { label: 'Agreed Price', value: `${viewData?.agree_price} £` },
+        { label: 'Sell Price', value: `${viewData?.sell_price} £` },
         {
             label: 'Expected Profit Margin',
             value: viewData?.agree_price && viewData?.sell_price
@@ -42,7 +42,7 @@ export default function View({ open, onClose, viewData }) {
         { label: 'Source', value: viewData?.source },
         { label: 'File/Image Link', value: viewData?.drive ? (<a href={viewData.drive} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}> Go to link </a>) : null },
         { label: 'Google Map', value: viewData?.map ? (<a href={viewData.map} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}> Go to map </a>) : null },
-        { label: 'Comments', value: viewData?.comments },
+        { label: 'Description', value: viewData?.comments },
     ];
 
     const EndPoint = 'properties';

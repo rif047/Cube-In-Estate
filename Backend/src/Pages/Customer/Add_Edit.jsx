@@ -172,12 +172,12 @@ export default function AddEditCustomer({ open, onClose, data, refreshData }) {
                 )}
 
                 {[
-                    { name: 'name', label: 'Customer Name*' },
+                    { name: 'name', label: 'Tenant Name*' },
                     { name: 'phone', label: 'Phone*' },
                     { name: 'alt_phone', label: 'Alternate Phone' },
                     { name: 'email', label: 'Email' },
                     { name: 'profession', label: 'Profession' },
-                    { name: 'comment', label: 'Comments' },
+                    { name: 'comment', label: 'Description' },
                 ].map(({ name, label }) => (
                     <TextField
                         key={name}

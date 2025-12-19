@@ -40,8 +40,8 @@ export default function SideMenuItem() {
 
                 {userType !== "Author" && (
                     <>
-                        {Menu_Item('/clients', <HandshakeOutlinedIcon />, 'Client')}
-                        {Menu_Item('/customers', <PeopleOutlineIcon />, 'Customer')}
+                        {Menu_Item('/clients', <HandshakeOutlinedIcon />, 'Landlord')}
+                        {Menu_Item('/customers', <PeopleOutlineIcon />, 'Tenant')}
                         {Menu_Item('/expenses', <LocalAtmIcon />, 'Expense')}
                         {Menu_Item('/users', <PersonOutlineIcon />, 'User')}
                     </>

@@ -167,15 +167,15 @@ export default function Properties() {
         {
             key: "client",
             accessorFn: row => `${row.client?.name} (${row.client?.clientType})`,
-            header: 'Client',
+            header: 'Landlord',
             size: 80
         },
         { key: "name", accessorKey: 'name', header: 'Property Name', size: 80 },
         { key: "code", accessorKey: 'code', header: 'Code', size: 80 },
         { key: "location", accessorKey: 'location', header: 'Location', size: 80 },
         { key: "decimal", accessorFn: row => `${row.decimal} dec`, header: 'Size', size: 80 },
-        { key: "agree_price", accessorFn: row => `${row.agree_price} tk`, header: 'Agreed', size: 80 },
-        { key: "sell_price", accessorFn: row => `${row.sell_price} tk`, header: 'Sell', size: 80 },
+        { key: "agree_price", accessorFn: row => `${row.agree_price} £`, header: 'Agreed', size: 80 },
+        { key: "sell_price", accessorFn: row => `${row.sell_price} £`, header: 'Sell', size: 80 },
         {
             key: "images",
             accessorKey: 'images',
@@ -307,7 +307,7 @@ export default function Properties() {
                         getOptionLabel={option => capitalizeWords(option.name)}
                         onChange={(e, newVal) => setSellCustomer(newVal?._id || '')}
                         isOptionEqualToValue={(a, b) => a._id === b._id}
-                        renderInput={params => <TextField {...params} label="Select Customer*" />}
+                        renderInput={params => <TextField {...params} label="Select Tenant*" />}
                         style={{ marginBottom: 20 }}
                     />
                     <TextField

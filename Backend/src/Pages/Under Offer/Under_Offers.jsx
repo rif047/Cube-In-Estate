@@ -112,14 +112,14 @@ export default function Under_Offers() {
     useEffect(() => { fetchData(); }, []);
 
     let columns = [
-        { accessorFn: row => `${row.client?.name} (${row.client?.clientType})`, key: "client", header: 'Client', size: 80 },
-        { accessorFn: row => `${row.customer?.name} (${row.customer?.phone})`, key: "customer", header: 'Customer', size: 80 },
+        { accessorFn: row => `${row.client?.name} (${row.client?.clientType})`, key: "client", header: 'Landlord', size: 80 },
+        { accessorFn: row => `${row.customer?.name} (${row.customer?.phone})`, key: "customer", header: 'Tenant', size: 80 },
         { accessorKey: 'name', key: "name", header: 'Name', size: 80 },
         { accessorKey: 'code', key: "code", header: 'Code', size: 80 },
         { accessorKey: 'location', key: "location", header: 'Location', size: 80 },
         { accessorFn: row => `${row.decimal} dec`, key: "decimal", header: 'Size', size: 80 },
-        { accessorFn: row => `${row.agree_price} tk`, key: "agree_price", header: 'Agreed', size: 80 },
-        { accessorFn: row => `${row.sell_price} tk`, key: "sell_price", header: 'Target', size: 80 },
+        { accessorFn: row => `${row.agree_price} £`, key: "agree_price", header: 'Agreed', size: 80 },
+        { accessorFn: row => `${row.sell_price} £`, key: "sell_price", header: 'Target', size: 80 },
         {
             accessorKey: 'images',
             key: "images",
@@ -211,7 +211,7 @@ export default function Under_Offers() {
                         getOptionLabel={option => capitalizeWords(option.name)}
                         onChange={(e, newVal) => setSellCustomer(newVal?._id || '')}
                         isOptionEqualToValue={(a, b) => a._id === b._id}
-                        renderInput={params => <TextField {...params} label="Select Customer*" />}
+                        renderInput={params => <TextField {...params} label="Select Tenant*" />}
                         style={{ marginBottom: 20 }}
                     />
                     <TextField

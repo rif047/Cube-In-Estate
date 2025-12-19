@@ -62,7 +62,7 @@ export default function AddEditClient({ open, onClose, data, refreshData }) {
         const { name, phone, alt_phone, address, email, clientType, country, fullAddress } = formData;
 
         if (!name) newErrors.name = 'Name is required.';
-        if (!clientType) newErrors.clientType = 'Client type is required.';
+        if (!clientType) newErrors.clientType = 'Landlord type is required.';
         if (!/^\d+$/.test(phone || '')) newErrors.phone = 'Phone number must contain numbers.';
         if (alt_phone && !/^\d+$/.test(alt_phone)) newErrors.alt_phone = 'Alternate phone must contain numbers.';
         if (!country) newErrors.country = 'Country is required.';
@@ -178,7 +178,7 @@ export default function AddEditClient({ open, onClose, data, refreshData }) {
 
                 <TextField
                     select
-                    label="Client Type*"
+                    label="Landlord Type*"
                     name="clientType"
                     fullWidth
                     margin="normal"
@@ -200,8 +200,8 @@ export default function AddEditClient({ open, onClose, data, refreshData }) {
                 </TextField>
 
                 {[
-                    { name: 'comment', label: 'Describe Client' },
-                    { name: 'name', label: 'Client Name*' },
+                    { name: 'comment', label: 'Describe Landlord' },
+                    { name: 'name', label: 'Landlord Name*' },
                     { name: 'phone', label: 'Phone*' },
                     { name: 'alt_phone', label: 'Alternate Phone' },
                     { name: 'email', label: 'Email' },

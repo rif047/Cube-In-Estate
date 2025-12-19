@@ -24,8 +24,8 @@ export default function View({ open, onClose, viewData }) {
     const [imgCurrentIndex, setImgCurrentIndex] = useState(0);
 
     const fieldsToView = [
-        { label: 'Client Name', value: `${viewData?.client?.name} (0${viewData?.client?.phone})` },
-        { label: 'Customer Name', value: `${viewData?.customer?.name} (0${viewData?.customer?.phone})` },
+        { label: 'Landlord Name', value: `${viewData?.client?.name} (0${viewData?.client?.phone})` },
+        { label: 'Tenant Name', value: `${viewData?.customer?.name} (0${viewData?.customer?.phone})` },
         { label: 'Let Date', value: viewData.date },
         { label: 'Code', value: viewData?.code },
         { label: 'Location', value: viewData?.location },
@@ -33,8 +33,8 @@ export default function View({ open, onClose, viewData }) {
         { label: 'Size in SQFT', value: `${viewData?.sqft} SQFT` },
         { label: 'Property For', value: viewData?.property_for },
         { label: 'Property Type', value: viewData?.property_type },
-        { label: 'Agree Price', value: `${viewData?.agree_price} tk` },
-        { label: 'Let Price', value: `${viewData?.sell_price} tk` },
+        { label: 'Agree Price', value: `${viewData?.agree_price} £` },
+        { label: 'Let Price', value: `${viewData?.sell_price} £` },
         {
             label: 'Profit Margin',
             value: viewData?.agree_price && viewData?.sell_price
@@ -44,7 +44,7 @@ export default function View({ open, onClose, viewData }) {
         { label: 'Source', value: viewData?.source },
         { label: 'File/Image Link', value: viewData?.drive },
         { label: 'Google Map', value: viewData?.map },
-        { label: 'Comments', value: viewData?.comments },
+        { label: 'Description', value: viewData?.comments },
     ];
 
     const EndPoint = 'properties';
