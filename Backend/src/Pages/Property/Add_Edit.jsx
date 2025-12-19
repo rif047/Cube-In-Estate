@@ -42,15 +42,27 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
 
         if (data?.images) setSelectedImages(data.images);
         if (data?.client?._id) setFormData(prev => ({ ...prev, client: data.client._id }));
+
+        // Split location into postal code and full address if editing
+        if (data?.location) {
+            const locationParts = data.location.split(',').map(part => part.trim());
+            if (locationParts.length > 0) {
+                setFormData(prev => ({
+                    ...prev,
+                    postal_code: locationParts[0] || '',
+                    full_address: locationParts.slice(1).join(', ') || ''
+                }));
+            }
+        }
     }, [data]);
 
     const validate = () => {
         const newErrors = {};
-        const { name, code, location, property_type, property_for, agree_price, sell_price, decimal, sqft, client } = formData;
+        const { name, postal_code, full_address, location, property_type, property_for, agree_price, sell_price, decimal, sqft, client } = formData;
 
         if (!name) newErrors.name = 'Name is required.';
-        if (!code) newErrors.code = 'Code is required.';
-        if (!location) newErrors.location = 'Location is required.';
+        if (!postal_code) newErrors.postal_code = 'Postal Code is required.';
+        if (!full_address) newErrors.full_address = 'Full Address is required.';
         if (!agree_price) newErrors.agree_price = 'Agreed Price is required.';
         if (!sell_price) newErrors.sell_price = 'Sell Price is required.';
         if (!property_type) newErrors.property_type = 'Property Type is required.';
@@ -113,7 +125,19 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
         setLoading(true);
 
         const formDataToSubmit = new FormData();
-        Object.entries(formData).forEach(([key, value]) => formDataToSubmit.append(key, value));
+
+        // Combine postal code and full address into location
+        const location = `${formData.postal_code}, ${formData.full_address}`;
+
+        Object.entries(formData).forEach(([key, value]) => {
+            if (key !== 'postal_code' && key !== 'full_address') {
+                formDataToSubmit.append(key, value);
+            }
+        });
+
+        // Add the combined location
+        formDataToSubmit.append('location', location);
+
         selectedImages.forEach(image => formDataToSubmit.append('images', image));
 
         try {
@@ -130,9 +154,6 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
                 if (errorMessage === 'Name already exists') {
                     setErrors(prev => ({ ...prev, name: 'This property name already exists.' }));
                 }
-                else if (errorMessage === 'Code already exists') {
-                    setErrors(prev => ({ ...prev, code: 'This property code already exists.' }));
-                }
                 else {
                     toast.error(errorMessage || 'Failed to submit data.');
                 }
@@ -146,7 +167,6 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
 
     const formFields = [
         { label: 'Property Name*', name: 'name', type: 'text' },
-        { label: 'Location*', name: 'location', type: 'text' },
         { label: 'Size in Decimal*', name: 'decimal', type: 'number' },
         { label: 'Size in SQFT', name: 'sqft', type: 'number' },
         { label: 'Agreed Price*', name: 'agree_price', type: 'number' },
@@ -190,6 +210,33 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
                     )}
                 />
 
+
+                <Box display="flex" gap={1} mt={2}>
+                    <TextField
+                        label="Postal Code*"
+                        name="postal_code"
+                        type="text"
+                        size="small"
+                        style={{ width: '30%' }}
+                        value={formData.postal_code || ''}
+                        onChange={handleChange}
+                        error={!!errors.postal_code}
+                        helperText={errors.postal_code}
+                    />
+                    <TextField
+                        label="Full Address*"
+                        name="full_address"
+                        type="text"
+                        size="small"
+                        style={{ width: '70%' }}
+                        value={formData.full_address || ''}
+                        onChange={handleChange}
+                        error={!!errors.full_address}
+                        helperText={errors.full_address}
+                    />
+                </Box>
+
+
                 <TextField
                     select
                     label="Property For*"
@@ -211,7 +258,7 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
                     fullWidth
                     size="small"
                     options={[
-                        "House", "Flat", "Apartment", "Duplex", "Villa/Bungalow", "Office",
+                        "House", "Flat", "Apartment", "Room", "Duplex", "Villa/Bungalow", "Office",
                         "Shop", "Showroom", "Hotel", "Restaurant", "Warehouse", "Empty Land",
                         "Residential Land", "Commercial Land", "Agricultural Land", "Other"
                     ]}
@@ -236,21 +283,6 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
                     )}
                 />
 
-                <TextField
-                    label="Code*"
-                    name="code"
-                    type="text"
-                    fullWidth
-                    margin="normal"
-                    size="small"
-                    value={formData.code || ''}
-                    onChange={handleChange}
-                    error={!!errors.code}
-                    helperText={errors.code}
-                    disabled={!!data?._id}
-                />
-
-
                 {formFields.map(({ label, name, type }) => (
                     <TextField
                         key={name}
@@ -266,6 +298,8 @@ export default function AddEdit({ open, onClose, data, refreshData }) {
                         helperText={errors[name]}
                     />
                 ))}
+
+
 
                 <h2 className='mt-8 mb-2 text-lg'>Select Property Images:</h2>
                 <input

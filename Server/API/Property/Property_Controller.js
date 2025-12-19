@@ -69,11 +69,10 @@ let Properties = async (req, res) => {
 
 let Create = async (req, res) => {
     try {
-        const { name, code, location, property_type, property_for, decimal, sqft, agree_price, sell_price, drive, map, source, comments, client, customer, date, status } = req.body;
+        const { name, location, property_type, property_for, decimal, sqft, agree_price, sell_price, drive, map, source, comments, client, customer, date, status } = req.body;
 
         const requiredFields = {
             name: 'Property Name',
-            code: 'Property Code',
             property_type: 'Property Type',
             property_for: 'Property For Sell/Let',
             decimal: 'Decimal',
@@ -90,18 +89,33 @@ let Create = async (req, res) => {
         let checkName = await Property.findOne({ name: name.toLowerCase() });
         if (checkName) { return res.status(400).send('Name already exists'); }
 
-        let checkCode = await Property.findOne({ code: code.toLowerCase() });
-        if (checkCode) { return res.status(400).send('Code already exists'); }
-
 
         let images = [];
         if (req.files?.length) {
             images = await compressAndSaveImages(req.files, name.toLowerCase());
         }
 
+
+        const generatePropertyCode = () => {
+            const timePart = Date.now().toString().slice(-4);
+            const randomPart = Math.floor(100 + Math.random() * 900);
+            return `ID-${timePart}${randomPart}`;
+        };
+
+        let code;
+        let isUnique = false;
+
+        while (!isUnique) {
+            code = generatePropertyCode();
+            const exists = await Property.findOne({ code });
+            if (!exists) isUnique = true;
+        }
+
+
+
         let newData = new Property({
             name: name.toLowerCase(),
-            code: code.toLowerCase(),
+            code,
             location: location,
             property_type: property_type,
             property_for: property_for,
@@ -149,11 +163,10 @@ let View = async (req, res) => {
 
 let Update = async (req, res) => {
     try {
-        const { name, code, location, property_type, property_for, decimal, sqft, agree_price, sell_price, drive, map, source, comments, client } = req.body;
+        const { name, location, property_type, property_for, decimal, sqft, agree_price, sell_price, drive, map, source, comments, client } = req.body;
 
         const requiredFields = {
             name: 'Property Name',
-            code: 'Property Code',
             property_type: 'Property Type',
             property_for: 'Property For Sell/Let',
             decimal: 'Decimal',
@@ -183,7 +196,6 @@ let Update = async (req, res) => {
         }
 
         updateData.name = name.toLowerCase();
-        updateData.code = code.toLowerCase();
         updateData.location = location;
         updateData.property_type = property_type;
         updateData.property_for = property_for;
